@@ -7,7 +7,7 @@ import (
 	"image"
 	"image/color"
 	"image/png"
-	"os"
+	"io"
 )
 
 const (
@@ -32,8 +32,8 @@ func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
 }
 
 func Make(
-	input,
-	filename string,
+	input string,
+	w io.Writer,
 ) {
 	hash := generateHash(input)
 
@@ -66,18 +66,8 @@ func Make(
 		}
 	}
 
-	file, err := os.Create(filename)
-	if err != nil {
-		fmt.Println("Error: ", err)
+	if err := png.Encode(w, img); err != nil {
+		fmt.Printf("Error encoding image %s: %v\n", input, err)
 		return
 	}
-
-	png.Encode(file, img)
-
-	err = file.Sync()
-	if err != nil {
-		fmt.Println("Error syncing file: ", err)
-	}
-
-	file.Close()
 }
