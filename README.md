@@ -2,8 +2,6 @@
 
 This package provides a simple way to generate unique, symmetric identicons based on an input string (e.g., an email address or username). It uses an **MD5 hash** to create a deterministic pattern and color scheme, then mirrors the design for a visually appealing avatar.
 
----
-
 ## Installation
 
 To use this package in your Go project, install it via:
@@ -18,7 +16,6 @@ Then, import it in your Go code:
 import "github.com/MuhammadSaim/goavatar"
 ```
 
----
 
 ## Usage
 
@@ -38,8 +35,6 @@ func main() {
 
 This will generate a unique identicon for the input string and save it as `avatar.png`.
 
----
-
 ## Package Documentation
 
 ### **Generate Identicon**
@@ -55,13 +50,9 @@ func Make(input, filename string)
 ## License
 This project is open-source under the MIT License.
 
----
 
 ## Contributing
 Contributions are welcome! Feel free to open a pull request or create an issue.
 
----
-
 ## Author
-👤 **Muhammad Saim**  
-🔗 [GitHub Profile](https://github.com/MuhammadSaim)
+👤 **Muhammad Saim**

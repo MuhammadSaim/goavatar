@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	gridSize = 8  // Grid size (8x8)
-	scale    = 20 // Scale factor for pixel size
+	width    = 256
+	height   = 256
+	gridSize = 8 // Grid size (8x8)
 )
 
 // get the any string and make a hash
@@ -22,10 +23,10 @@ func generateHash(data string) string {
 }
 
 // draw a single pixel and enlarge each pixle into 20x20 block
-func drawPixel(img *image.RGBA, x, y int, c color.Color) {
-	for dx := 0; dx < scale; dx++ {
-		for dy := 0; dy < scale; dy++ {
-			img.Set(x*scale+dx, y*scale+dy, c)
+func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
+	for dx := 0; dx < pixelW; dx++ {
+		for dy := 0; dy < pixelH; dy++ {
+			img.Set(x*pixelW+dx, y*pixelH+dy, c)
 		}
 	}
 }
@@ -37,7 +38,10 @@ func Make(
 	hash := generateHash(input)
 
 	// create a blank image
-	img := image.NewRGBA(image.Rect(0, 0, gridSize*scale, gridSize*scale))
+	img := image.NewRGBA(image.Rect(0, 0, width, height))
+
+	pixelSizeX := width / gridSize  // each grid cell width
+	pixelSizeY := height / gridSize // each grid cell height
 
 	// generate colors
 	avatarColor := color.RGBA{hash[0], hash[1], hash[2], 255}
@@ -52,11 +56,11 @@ func Make(
 
 			// image should
 			if pixelOn {
-				drawPixel(img, x, y, avatarColor)
-				drawPixel(img, gridSize-1-x, y, avatarColor) // mirror the pixel
+				drawPixel(img, x, y, avatarColor, pixelSizeX, pixelSizeY)
+				drawPixel(img, gridSize-1-x, y, avatarColor, pixelSizeX, pixelSizeY) // mirror the pixel
 			} else {
-				drawPixel(img, x, y, bgColor)
-				drawPixel(img, gridSize-1-x, y, bgColor) // mirror the bg pixel
+				drawPixel(img, x, y, bgColor, pixelSizeX, pixelSizeY)
+				drawPixel(img, gridSize-1-x, y, bgColor, pixelSizeX, pixelSizeY) // mirror the bg pixel
 			}
 
 		}
@@ -68,7 +72,12 @@ func Make(
 		return
 	}
 
-	defer file.Close()
-
 	png.Encode(file, img)
+
+	err = file.Sync()
+	if err != nil {
+		fmt.Println("Error syncing file: ", err)
+	}
+
+	file.Close()
 }
