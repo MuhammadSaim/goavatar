@@ -3,5 +3,5 @@ package main
 import "github.com/MuhammadSaim/goavatar"
 
 func main() {
-	goavatar.Make("example@example.com", "avatar.png")
+	goavatar.Make("MuhammadSaim", "avatar_2.png")
 }
