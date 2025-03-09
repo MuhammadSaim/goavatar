@@ -10,11 +10,22 @@ import (
 	"os"
 )
 
-const (
-	width    = 256
-	height   = 256
-	gridSize = 8 // Grid size (8x8)
-)
+// Option struct for the configurations
+type Options struct {
+	Width    int
+	Height   int
+	GridSize int
+	BgColor  color.RGBA
+	FgColor  color.RGBA
+}
+
+// default options to provide the default value
+var defaultOptions = Options{
+	Width:    256,
+	Height:   256,
+	GridSize: 8,
+	BgColor:  color.RGBA{240, 240, 240, 255}, // light gray color
+}
 
 // get the any string and make a hash
 func generateHash(data string) string {
@@ -34,33 +45,56 @@ func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
 func Make(
 	input,
 	filename string,
+	opts Options,
 ) {
+	// generate the hash of an input
 	hash := generateHash(input)
 
-	// create a blank image
-	img := image.NewRGBA(image.Rect(0, 0, width, height))
+	// use default options if any value is empty or 0
+	if opts.Width == 0 || opts.Width < 100 {
+		opts.Width = defaultOptions.Width
+	}
 
-	pixelSizeX := width / gridSize  // each grid cell width
-	pixelSizeY := height / gridSize // each grid cell height
+	if opts.Height == 0 || opts.Height < 100 {
+		opts.Height = defaultOptions.Height
+	}
+
+	if opts.GridSize == 0 || opts.GridSize < 8 {
+		opts.GridSize = defaultOptions.GridSize
+	}
+
+	if opts.BgColor == (color.RGBA{}) {
+		opts.BgColor = defaultOptions.BgColor
+	}
+
+	if opts.FgColor == (color.RGBA{}) {
+		opts.FgColor = color.RGBA{hash[0], hash[1], hash[2], 255}
+	}
+
+	// create a blank image
+	img := image.NewRGBA(image.Rect(0, 0, opts.Width, opts.Height))
+
+	pixelSizeX := opts.Width / opts.GridSize  // each grid cell width
+	pixelSizeY := opts.Height / opts.GridSize // each grid cell height
 
 	// generate colors
-	avatarColor := color.RGBA{hash[0], hash[1], hash[2], 255}
-	bgColor := color.RGBA{240, 240, 240, 255}
+	avatarColor := opts.FgColor
+	bgColor := opts.BgColor
 
 	// generate the pixel patren
 	// loop over each pixel in the grid
-	for y := 0; y < gridSize; y++ {
-		for x := 0; x < gridSize/2+1; x++ {
+	for y := 0; y < opts.GridSize; y++ {
+		for x := 0; x < opts.GridSize/2+1; x++ {
 			// use bitwise operation to determine if a pixel should be colored
 			pixelOn := (hash[y]>>(x%8))&1 == 1
 
 			// image should
 			if pixelOn {
 				drawPixel(img, x, y, avatarColor, pixelSizeX, pixelSizeY)
-				drawPixel(img, gridSize-1-x, y, avatarColor, pixelSizeX, pixelSizeY) // mirror the pixel
+				drawPixel(img, opts.GridSize-1-x, y, avatarColor, pixelSizeX, pixelSizeY) // mirror the pixel
 			} else {
 				drawPixel(img, x, y, bgColor, pixelSizeX, pixelSizeY)
-				drawPixel(img, gridSize-1-x, y, bgColor, pixelSizeX, pixelSizeY) // mirror the bg pixel
+				drawPixel(img, opts.GridSize-1-x, y, bgColor, pixelSizeX, pixelSizeY) // mirror the bg pixel
 			}
 
 		}

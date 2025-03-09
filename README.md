@@ -3,6 +3,7 @@
 This package provides a simple way to generate unique, symmetric identicons based on an input string (e.g., an email address or username). It uses an **MD5 hash** to create a deterministic pattern and color scheme, then mirrors the design for a visually appealing avatar.
 
 ## User Avatars
+
 <p align="center">
   <kbd>
     <img src="./arts/avatar_1.png" width="100" alt="Avatar 1"/><br/>
@@ -44,7 +45,6 @@ Then, import it in your Go code:
 import "github.com/MuhammadSaim/goavatar"
 ```
 
-
 ## Usage
 
 ### **Basic Example**
@@ -53,34 +53,74 @@ import "github.com/MuhammadSaim/goavatar"
 package main
 
 import (
-    "github.com/MuhammadSaim/goavatar"
+	"image/color"
+
+	"github.com/MuhammadSaim/goavatar"
 )
 
 func main() {
-    goavatar.Make("example@example.com", "avatar.png")
+	// Generate the first avatar with a custom width and height
+	options1 := goavatar.Options{
+		Width:  512, // Set custom image width (default is 256)
+		Height: 512, // Set custom image height (default is 256)
+	}
+	goavatar.Make("QuantumNomad42", "../arts/avatar_1.png", options1)
+	// Generates a unique avatar based on "QuantumNomad42" and saves it as avatar_1.png
+
+	// Generate the second avatar with a custom grid size
+	options2 := goavatar.Options{
+		Width:    512, // Set custom image width (default is 256)
+		Height:   512, // Set custom image height (default is 256)
+		GridSize: 10,  // Set custom grid size (default is 8), affects pattern complexity
+	}
+	goavatar.Make("EchoFrost7", "../arts/avatar_2.png", options2)
+	// Generates an avatar with a 10x10 grid for more detail and saves it as avatar_2.png
+
+	// Generate the third avatar with a custom background color
+	options3 := goavatar.Options{
+		Width:   512,                           // Set custom image width (default is 256)
+		Height:  512,                           // Set custom image height (default is 256)
+		BgColor: color.RGBA{170, 120, 10, 255}, // Change background color (default is light gray)
+	}
+	goavatar.Make("NebulaTide19", "../arts/avatar_3.png", options3)
+	// Generates an avatar with a brownish background color and saves it as avatar_3.png
+
+	// Generate the fourth avatar with a custom foreground and background color
+	options4 := goavatar.Options{
+		Width:   512,                            // Set custom image width (default is 256)
+		Height:  512,                            // Set custom image height (default is 256)
+		BgColor: color.RGBA{170, 120, 10, 255},  // Change background color (default is light gray)
+		FgColor: color.RGBA{255, 255, 255, 255}, // Change foreground color (default is extracted from hash)
+	}
+	goavatar.Make("ZephyrPulse88", "../arts/avatar_4.png", options4)
+	// Generates an avatar with a brownish background and white foreground, saving it as avatar_4.png
+
+	// Generate an avatar using default settings
+	goavatar.Make("EmberNexus23", "../arts/avatar_5.png", goavatar.Options{})
+	// Uses default width (256), height (256), grid size (8), and colors
+	// Saves the generated avatar as avatar_5.png
 }
+
 ```
 
-This will generate a unique identicon for the input string and save it as `avatar.png`.
+This will generate a unique identicons for the input string and save in the `arts` directory.
 
 ## Package Documentation
 
 ### **Generate Identicon**
 
 ```go
-func Make(input, filename string)
+func Make(input, filename string, goavatar.Options{})
 ```
 
-- `input`: A string used to generate a unique identicon (e.g., email, username).
-- `filename`: The name of the output image file.
-
+-   `input`: A string used to generate a unique identicon (e.g., email, username).
+-   `filename`: The name of the output image file.
+-   `goavatar.Options{}`: Options to override the default values.
 
 ## License
+
 This project is open-source under the MIT License.
 
-
 ## Contributing
-Contributions are welcome! Feel free to open a pull request or create an issue.
 
-## Author
-👤 **Muhammad Saim**
+Contributions are welcome! Feel free to open a pull request or create an issue.
