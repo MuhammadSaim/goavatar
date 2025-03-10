@@ -3,11 +3,8 @@ package goavatar
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"fmt"
 	"image"
 	"image/color"
-	"image/png"
-	"os"
 )
 
 // Option struct for the configurations
@@ -42,11 +39,8 @@ func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
 	}
 }
 
-func Make(
-	input,
-	filename string,
-	opts Options,
-) {
+// main func which is responsible to make an image and return Image
+func Make(input string, opts Options) image.Image {
 	// generate the hash of an input
 	hash := generateHash(input)
 
@@ -100,18 +94,5 @@ func Make(
 		}
 	}
 
-	file, err := os.Create(filename)
-	if err != nil {
-		fmt.Println("Error: ", err)
-		return
-	}
-
-	png.Encode(file, img)
-
-	err = file.Sync()
-	if err != nil {
-		fmt.Println("Error syncing file: ", err)
-	}
-
-	file.Close()
+	return img
 }
