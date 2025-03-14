@@ -39,7 +39,8 @@ jobs:
 
       - name: Install Go Semantic Release
         run: |
-          curl -sL https://git.io/JvJpK | bash
+          curl -sL https://github.com/go-semantic-release/semantic-release/releases/latest/download/semantic-release-linux-amd64 -o semantic-release
+          chmod +x semantic-release
           sudo mv semantic-release /usr/local/bin/
 
       - name: Run Go Semantic Release
