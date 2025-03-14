@@ -38,7 +38,7 @@ jobs:
           fetch-depth: 0 # Fetch full history of semantic versioning
 
       - name: Install Go Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
+        uses: codfish/semantic-release-action@v2.0.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
