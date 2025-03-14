@@ -20,9 +20,6 @@ jobs:
         with:
           go-version: 1.24
 
-      - name: Install Dependencies
-        run: go mod tidy
-
       - name: Run Tests
         run: go test -v
 
@@ -32,7 +29,7 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Required to create release
 
     steps:
       - name: Checkout Repository
@@ -40,15 +37,12 @@ jobs:
         with:
           fetch-depth: 0 # Fetch full history of semantic versioning
 
-      - name: Setup Node.js (for semantic-release)
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
+      - name: Install Go Semantic Release
+        run: |
+          curl -sL https://git.io/JvJpK | bash
+          sudo mv semantic-release /usr/local/bin/
 
-      - name: Install Semantic Release
-        run: npm install -g semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
-
-      - name: Run Semantic Release
+      - name: Run Go Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: semantic-release
