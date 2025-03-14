@@ -38,15 +38,7 @@ jobs:
           fetch-depth: 0 # Fetch full history of semantic versioning
 
       - name: Install Go Semantic Release
-        run: |
-          LATEST_VERSION=$(curl -s https://api.github.com/repos/go-semantic-release/semantic-release/releases/latest | jq -r '.tag_name')
-          FILENAME="semantic-release_${LATEST_VERSION#v}_linux_amd64"
-          curl -sL https://github.com/go-semantic-release/semantic-release/releases/download/$LATEST_VERSION/$FILENAME -o semantic-release
-          chmod +x semantic-release
-          sudo mv semantic-release /usr/local/bin/
-
-      - name: Run Go Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: semantic-release
 
