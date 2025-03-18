@@ -10,7 +10,6 @@ jobs:
     name: Run Go Tests
     runs-on: ubuntu-latest
 
-
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -22,7 +21,6 @@ jobs:
 
       - name: Run Tests
         run: go test -v
-
 
   release:
     name: Create Release
@@ -37,8 +35,15 @@ jobs:
         with:
           fetch-depth: 0 # Fetch full history of semantic versioning
 
-      - name: Install Go Semantic Release
-        uses: codfish/semantic-release-action@v2.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18 # Use the latest stable version
 
+      - name: Install Semantic Release
+        run: npm install -g semantic-release @semantic-release/github
+
+      - name: Run Semantic Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # GitHub token for creating releases
+        run: semantic-release
