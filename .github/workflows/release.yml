@@ -41,7 +41,7 @@ jobs:
           node-version: 18 # Use the latest stable version
 
       - name: Install Semantic Release
-        run: npm install -g semantic-release @semantic-release/github
+        run: npm install -g semantic-release @semantic-release/github @semantic-release/changelog
 
       - name: Run Semantic Release
         env:
