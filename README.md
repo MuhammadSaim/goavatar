@@ -53,7 +53,11 @@ import "github.com/MuhammadSaim/goavatar"
 package main
 
 import (
+	"fmt"
+	"image"
 	"image/color"
+	"image/png"
+	"os"
 
 	"github.com/MuhammadSaim/goavatar"
 )
@@ -67,7 +71,7 @@ func main() {
 		Width:  512, // Set custom image width (default is 256)
 		Height: 512, // Set custom image height (default is 256)
 	}
-	iamge1 := goavatar.Make("QuantumNomad42", options1)
+	image1 := goavatar.Make("QuantumNomad42", options1)
 	// Generates a unique avatar based on "QuantumNomad42" and saves it as avatar_1.png
 
 	// Generate the second avatar with a custom grid size
@@ -126,8 +130,8 @@ func main() {
 		} else {
 			fmt.Println("Saved: ", filename)
 		}
+	}
 }
-
 ```
 
 This will generate a unique identicons for the input string and save in the `arts` directory.
@@ -140,9 +144,9 @@ This will generate a unique identicons for the input string and save in the `art
 func Make(input, goavatar.Options{}) image.Image
 ```
 
--   `input`: A string used to generate a unique identicon (e.g., email, username).
--   `goavatar.Options{}`: Options to override the default values.
--   `image.Image`: function returns an `image.Image`, allowing the caller to handle image processing, encoding, and storage as needed.
+- `input`: A string used to generate a unique identicon (e.g., email, username).
+- `goavatar.Options{}`: Options to override the default values.
+- `image.Image`: function returns an `image.Image`, allowing the caller to handle image processing, encoding, and storage as needed.
 
 ## License
 
