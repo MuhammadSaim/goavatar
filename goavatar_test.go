@@ -43,33 +43,33 @@ func TestMake(t *testing.T) {
 		{
 			name:  "Custom width and height",
 			input: "custom-size",
-			opts:  []optFunc{Width(512), Height(512)},
+			opts:  []optFunc{WithWidth(512), WithHeight(512)},
 			width: 512, height: 512,
 		},
 		{
 			name:  "Custom background color",
 			input: "custom-bg",
 			// override background color only
-			opts:  []optFunc{BgColor(255, 0, 0, 255)},
+			opts:  []optFunc{WithBgColor(255, 0, 0, 255)},
 			width: 256, height: 256,
 		},
 		{
 			name:  "Custom foreground color",
 			input: "custom-fg",
 			// override foreground color only
-			opts:  []optFunc{FgColor(10, 20, 30, 255)},
+			opts:  []optFunc{WithFgColor(10, 20, 30, 255)},
 			width: 256, height: 256,
 		},
 		{
 			name:  "QuantumNomad42",
 			input: "QuantumNomad42",
-			opts:  []optFunc{Width(512), Height(512)},
+			opts:  []optFunc{WithWidth(512), WithHeight(512)},
 			width: 512, height: 512,
 		},
 		{
 			name:  "EchoFrost7",
 			input: "EchoFrost7",
-			opts:  []optFunc{Width(512), Height(512)},
+			opts:  []optFunc{WithWidth(512), WithHeight(512)},
 			width: 512, height: 512,
 		},
 	}

@@ -16,33 +16,33 @@ func main() {
 	// Generates a unique avatar based on "QuantumNomad42" with a custom width and height.
 	// Saves the generated avatar as avatar_1.png
 	image1 := goavatar.Make("QuantumNomad42",
-		goavatar.Width(512),  // Set custom image width (default is 256)
-		goavatar.Height(512), // Set custom image height (default is 256)
+		goavatar.WithWidth(512),  // Set custom image width (default is 256)
+		goavatar.WithHeight(512), // Set custom image height (default is 256)
 	)
 
 	// Generate the second avatar with a custom grid size with a 10x10 grid for more detail.
 	// Saves the generated avatar as avatar_2.png
 	image2 := goavatar.Make("EchoFrost7",
-		goavatar.Width(512),   // Set custom image width (default is 256)
-		goavatar.Height(512),  // Set custom image height (default is 256)
-		goavatar.GridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+		goavatar.WithWidth(512),   // Set custom image width (default is 256)
+		goavatar.WithHeight(512),  // Set custom image height (default is 256)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
 	)
 
 	// Generate the third avatar with a custom brownish background color.
 	// Saves the generated avatar as avatar_3.png
 	image3 := goavatar.Make("NebulaTide19",
-		goavatar.Width(512),                 // Set custom image width (default is 256)
-		goavatar.Height(512),                // Set custom image height (default is 256)
-		goavatar.BgColor(170, 120, 10, 255), // Change background color (default is light gray)
+		goavatar.WithWidth(512),                 // Set custom image width (default is 256)
+		goavatar.WithHeight(512),                // Set custom image height (default is 256)
+		goavatar.WithBgColor(170, 120, 10, 255), // Change background color (default is light gray)
 	)
 
 	// Generate the fourth avatar with a custom brownish background and white foreground.
 	// Saves the generated avatar as avatar_4.png
 	image4 := goavatar.Make("ZephyrPulse88",
-		goavatar.Width(512),                  // Set custom image width (default is 256)
-		goavatar.Height(512),                 // Set custom image height (default is 256)
-		goavatar.BgColor(170, 120, 10, 255),  // Change background color (default is light gray)
-		goavatar.FgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
+		goavatar.WithWidth(512),                  // Set custom image width (default is 256)
+		goavatar.WithHeight(512),                 // Set custom image height (default is 256)
+		goavatar.WithBgColor(170, 120, 10, 255),  // Change background color (default is light gray)
+		goavatar.WithFgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
 
 	)
 

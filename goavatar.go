@@ -19,36 +19,36 @@ type options struct {
 // optFunc is a function that applies an option to the options struct.
 type optFunc func(*options)
 
-// Width sets the width of the avatar.
-func Width(w int) optFunc {
+// WithWidth sets the width of the avatar.
+func WithWidth(w int) optFunc {
 	return func(o *options) {
 		o.width = w
 	}
 }
 
-// Height sets the height of the avatar.
-func Height(h int) optFunc {
+// WithHeight sets the height of the avatar.
+func WithHeight(h int) optFunc {
 	return func(o *options) {
 		o.height = h
 	}
 }
 
-// GridSize sets the grid size of the avatar.
-func GridSize(g int) optFunc {
+// WithGridSize sets the grid size of the avatar.
+func WithGridSize(g int) optFunc {
 	return func(o *options) {
 		o.gridSize = g
 	}
 }
 
-// BgColor sets the background color of the avatar.
-func BgColor(r, g, b, a uint8) optFunc {
+// WithBgColor sets the background color of the avatar.
+func WithBgColor(r, g, b, a uint8) optFunc {
 	return func(o *options) {
 		o.bgColor = color.RGBA{r, g, b, a}
 	}
 }
 
-// FgColor sets the foreground color of the avatar.
-func FgColor(r, g, b, a uint8) optFunc {
+// WithFgColor sets the foreground color of the avatar.
+func WithFgColor(r, g, b, a uint8) optFunc {
 	return func(o *options) {
 		o.fgColor = color.RGBA{r, g, b, a}
 	}
