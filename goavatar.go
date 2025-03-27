@@ -9,8 +9,7 @@ import (
 
 // option contains the configuration for the avatar generator.
 type options struct {
-	width    int
-	height   int
+	size     int
 	gridSize int
 	bgColor  color.RGBA
 	fgColor  color.RGBA
@@ -19,17 +18,13 @@ type options struct {
 // optFunc is a function that applies an option to the options struct.
 type optFunc func(*options)
 
-// WithWidth sets the width of the avatar.
-func WithWidth(w int) optFunc {
+// WithSize sets the width and height of the avatar minimum 64x64.
+func WithSize(s int) optFunc {
 	return func(o *options) {
-		o.width = w
-	}
-}
-
-// WithHeight sets the height of the avatar.
-func WithHeight(h int) optFunc {
-	return func(o *options) {
-		o.height = h
+		// insure that image should be at least 64x64
+		if s >= 64 {
+			o.size = s
+		}
 	}
 }
 
@@ -57,8 +52,7 @@ func WithFgColor(r, g, b, a uint8) optFunc {
 // defaultOptions provides the default value to generate the avatar.
 func defaultOptions(hash string) options {
 	return options{
-		width:    256,
-		height:   256,
+		size:     64, // default size should be 64 to make sure images are perfect square
 		gridSize: 8,
 		bgColor:  color.RGBA{240, 240, 240, 255},             // light gray color
 		fgColor:  color.RGBA{hash[0], hash[1], hash[2], 255}, // use the first three hash bytes as the foreground color
@@ -91,10 +85,10 @@ func Make(input string, opts ...optFunc) image.Image {
 	}
 
 	// create a blank image
-	img := image.NewRGBA(image.Rect(0, 0, o.width, o.height))
+	img := image.NewRGBA(image.Rect(0, 0, o.size, o.size))
 
-	pixelSizeX := o.width / o.gridSize  // each grid cell width
-	pixelSizeY := o.height / o.gridSize // each grid cell height
+	pixelSizeX := o.size / o.gridSize // each grid cell width
+	pixelSizeY := o.size / o.gridSize // each grid cell height
 
 	// generate colors
 	avatarColor := o.fgColor
