@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"image"
-	"image/color"
 	"image/png"
 	"os"
 
@@ -11,49 +10,41 @@ import (
 )
 
 func main() {
-	// empty slice
+	// empty slice.
 	imgSlice := make([]image.Image, 0)
 
-	// Generate the first avatar with a custom width and height
-	options1 := goavatar.Options{
-		Width:  512, // Set custom image width (default is 256)
-		Height: 512, // Set custom image height (default is 256)
-	}
-	image1 := goavatar.Make("QuantumNomad42", options1)
-	// Generates a unique avatar based on "QuantumNomad42" and saves it as avatar_1.png
+	// Generates a unique avatar based on "QuantumNomad42" with a custom width and height.
+	// Saves the generated avatar as avatar_1.png
+	image1 := goavatar.Make("QuantumNomad42",
+		goavatar.WithSize(512), // Set custom image widthxheight (default is 64)
+	)
 
-	// Generate the second avatar with a custom grid size
-	options2 := goavatar.Options{
-		Width:    512, // Set custom image width (default is 256)
-		Height:   512, // Set custom image height (default is 256)
-		GridSize: 10,  // Set custom grid size (default is 8), affects pattern complexity
-	}
-	image2 := goavatar.Make("EchoFrost7", options2)
-	// Generates an avatar with a 10x10 grid for more detail and saves it as avatar_2.png
+	// Generate the second avatar with a custom grid size with a 10x10 grid for more detail.
+	// Saves the generated avatar as avatar_2.png
+	image2 := goavatar.Make("EchoFrost7",
+		goavatar.WithSize(512),    // Set custom image widthxheight (default is 64)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+	)
 
-	// Generate the third avatar with a custom background color
-	options3 := goavatar.Options{
-		Width:   512,                           // Set custom image width (default is 256)
-		Height:  512,                           // Set custom image height (default is 256)
-		BgColor: color.RGBA{170, 120, 10, 255}, // Change background color (default is light gray)
-	}
-	image3 := goavatar.Make("NebulaTide19", options3)
-	// Generates an avatar with a brownish background color and saves it as avatar_3.png
+	// Generate the third avatar with a custom brownish background color.
+	// Saves the generated avatar as avatar_3.png
+	image3 := goavatar.Make("NebulaTide19",
+		goavatar.WithSize(100),                  // Set custom image widthxheight (default is 64)
+		goavatar.WithBgColor(170, 120, 10, 255), // Change background color (default is light gray)
+	)
 
-	// Generate the fourth avatar with a custom foreground and background color
-	options4 := goavatar.Options{
-		Width:   512,                            // Set custom image width (default is 256)
-		Height:  512,                            // Set custom image height (default is 256)
-		BgColor: color.RGBA{170, 120, 10, 255},  // Change background color (default is light gray)
-		FgColor: color.RGBA{255, 255, 255, 255}, // Change foreground color (default is extracted from hash)
-	}
-	image4 := goavatar.Make("ZephyrPulse88", options4)
-	// Generates an avatar with a brownish background and white foreground, saving it as avatar_4.png
+	// Generate the fourth avatar with a custom brownish background and white foreground.
+	// Saves the generated avatar as avatar_4.png
+	image4 := goavatar.Make("ZephyrPulse88",
+		goavatar.WithSize(50),                    // Set custom image widthxheight if size is less then 64 this will go to default (default is 64)
+		goavatar.WithBgColor(170, 120, 10, 255),  // Change background color (default is light gray)
+		goavatar.WithFgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
+
+	)
 
 	// Generate an avatar using default settings
-	image5 := goavatar.Make("EmberNexus23", goavatar.Options{})
-	// Uses default width (256), height (256), grid size (8), and colors
 	// Saves the generated avatar as avatar_5.png
+	image5 := goavatar.Make("EmberNexus23")
 
 	// append all the images into the list
 	imgSlice = append(imgSlice, image1, image2, image3, image4, image5)
