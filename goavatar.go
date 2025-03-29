@@ -97,7 +97,7 @@ func Make(input string, opts ...optFunc) image.Image {
 	// generate the pixel pattern
 	// loop over each pixel in the grid
 	for y := 0; y < o.gridSize; y++ {
-		for x := 0; x < o.gridSize/2+1; x++ {
+		for x := 0; x < o.gridSize/2; x++ {
 			// use bitwise operation to determine if a pixel should be colored
 			pixelOn := (hash[y]>>(x%8))&1 == 1
 
