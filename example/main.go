@@ -9,66 +9,139 @@ import (
 	"github.com/MuhammadSaim/goavatar"
 )
 
-func main() {
-	// empty slice.
-	imgSlice := make([]image.Image, 0)
+// smallShape and triangleShape define custom pixel shapes
+// for use in some of the examples below
+var smallShape = [][]int{
+	{0, 0, 0, 0, 0},
+	{0, 1, 1, 1, 0},
+	{0, 1, 1, 1, 0},
+	{0, 1, 1, 1, 0},
+	{0, 0, 0, 0, 0},
+}
+var triangleShape = [][]int{
+	{0, 0, 0, 0, 1},
+	{0, 0, 0, 1, 1},
+	{0, 0, 1, 1, 1},
+	{0, 1, 1, 1, 1},
+	{1, 1, 1, 1, 1},
+}
 
-	// Generates a unique avatar based on "QuantumNomad42" with a custom width and height.
-	// Saves the generated avatar as avatar_1.png
-	image1 := goavatar.Make("QuantumNomad42",
-		goavatar.WithSize(512), // Set custom image widthxheight (default is 64)
+// customSizeExample creates an avatar for "QuantumNomad42"
+// with a custom image size (512)
+func customSizeExample() image.Image {
+	return goavatar.Make("QuantumNomad42",
+		goavatar.WithSize(512), // Set custom image size (default is 64)
 	)
+}
 
-	// Generate the second avatar with a custom grid size with a 10x10 grid for more detail.
-	// Saves the generated avatar as avatar_2.png
-	image2 := goavatar.Make("EchoFrost7",
-		goavatar.WithSize(512),    // Set custom image widthxheight (default is 64)
+// customSizeAndGridExample creates an avatar for "EchoFrost7"
+// with a custom image size (512) and a custom grid size (10)
+func customSizeAndGridExample() image.Image {
+	return goavatar.Make("EchoFrost7",
+		goavatar.WithSize(512),    // Set custom image size (default is 64)
 		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
 	)
+}
 
-	// Generate the third avatar with a custom brownish background color.
-	// Saves the generated avatar as avatar_3.png
-	image3 := goavatar.Make("NebulaTide19",
+// customSizeAndBackgroundColorExample creates an avatar for "NebulaTide19"
+// with a custom image size (100) and background color
+func customSizeAndBackgroundColorExample() image.Image {
+	return goavatar.Make("NebulaTide19",
 		goavatar.WithSize(100),                  // Set custom image widthxheight (default is 64)
 		goavatar.WithBgColor(170, 120, 10, 255), // Change background color (default is light gray)
 	)
+}
 
-	// Generate the fourth avatar with a custom brownish background and white foreground.
-	// Saves the generated avatar as avatar_4.png
-	image4 := goavatar.Make("ZephyrPulse88",
+// customSizeAndColorsExample creates an avatar for "ZephyrPulse88"
+// witha custom size (50) and foreground/background colors
+func customSizeAndColorsExample() image.Image {
+	return goavatar.Make("ZephyrPulse88",
 		goavatar.WithSize(50),                    // Set custom image widthxheight if size is less then 64 this will go to default (default is 64)
 		goavatar.WithBgColor(170, 120, 10, 255),  // Change background color (default is light gray)
 		goavatar.WithFgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
-
 	)
+}
 
-	// Generate an avatar using default settings
-	// Saves the generated avatar as avatar_5.png
-	image5 := goavatar.Make("EmberNexus23")
+// defaultExample() creates an avatar for "EmberNexus23" with the default settings
+func defaultExample() image.Image {
+	return goavatar.Make("EmberNexus23")
+}
 
-	// append all the images into the list
-	imgSlice = append(imgSlice, image1, image2, image3, image4, image5)
+// customForegroundShapeExample() creates an avatar for "EmberNexus23" with
+// a custom-shaped foreground pixel
+func customForegroundShapeExample() image.Image {
+	return goavatar.Make("EmberNexus23",
+		goavatar.WithSize(512),    // Set custom image size (default is 64)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+		goavatar.WithFgShape(smallShape),
+	)
+}
 
-	// loop through the image slice and save the images
-	for i, img := range imgSlice {
+// customPixelShapesExample() creates an avatar for "EmberNexus23" with
+// custom-shaped foreground and background pixels
+func customPixelShapesExample() image.Image {
+	return goavatar.Make("EmberNexus23",
+		goavatar.WithSize(512),    // Set custom image size (default is 64)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+		goavatar.WithFgShape(smallShape),
+		goavatar.WithBgShape(triangleShape),
+	)
+}
 
-		filename := fmt.Sprintf("../arts/avatar_%d.png", i+1)
+// customTransparentForegroundShapeExample() creates an avatar for "EmberNexus23" with
+// a custom-shaped foreground pixel
+// and transparency to allow the background to show through gaps in foreground pixels
+func customTransparentForegroundShapeExample() image.Image {
+	return goavatar.Make("EmberNexus23",
+		goavatar.WithSize(512),    // Set custom image size (default is 64)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+		goavatar.WithFgShape(smallShape),
+		goavatar.WithTransparency(),
+	)
+}
 
-		// Create the file
-		file, err := os.Create(filename)
-		if err != nil {
-			fmt.Println("Error creating file:", err)
-			continue
-		}
-		defer file.Close()
+// customTransparentPixelShapesExample() creates an avatar for "EmberNexus23" with
+// custom-shaped foreground and background pixels
+// and transparency to allow the background to show through gaps in foreground pixels
+func customTransparentPixelShapesExample() image.Image {
+	return goavatar.Make("EmberNexus23",
+		goavatar.WithSize(512),    // Set custom image size (default is 64)
+		goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
+		goavatar.WithFgShape(smallShape),
+		goavatar.WithBgShape(triangleShape),
+		goavatar.WithTransparency(),
+	)
+}
 
-		// Encode image as PNG and save
-		err = png.Encode(file, img)
-		if err != nil {
-			fmt.Println("Error saving image:", err)
-		} else {
-			fmt.Println("Saved: ", filename)
-		}
+// createFileForImage creates an example file for a given image.
+// The filename is created based on the image number argument.
+func createFileForImage(n int, img image.Image) {
+	fn := fmt.Sprintf("../arts/avatar_%d.png", n)
 
+	file, err := os.Create(fn)
+	if err != nil {
+		fmt.Printf("Error creating file %s: %s\n", fn, err)
+		return
 	}
+	defer file.Close()
+
+	// Encode image as PNG and save
+	err = png.Encode(file, img)
+	if err != nil {
+		fmt.Printf("Error saving image %d: %s\n", n, err)
+		return
+	}
+	fmt.Println("Saved: ", fn)
+}
+
+func main() {
+	createFileForImage(1, customSizeExample())
+	createFileForImage(2, customSizeAndGridExample())
+	createFileForImage(3, customSizeAndBackgroundColorExample())
+	createFileForImage(4, customSizeAndColorsExample())
+	createFileForImage(5, defaultExample())
+	createFileForImage(6, customForegroundShapeExample())
+	createFileForImage(7, customTransparentForegroundShapeExample())
+	createFileForImage(8, customPixelShapesExample())
+	createFileForImage(9, customTransparentPixelShapesExample())
 }

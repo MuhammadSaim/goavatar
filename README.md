@@ -2,7 +2,7 @@
 
 This package provides a simple way to generate unique, symmetric identicons based on an input string (e.g., an email address or username). It uses an **MD5 hash** to create a deterministic pattern and color scheme, then mirrors the design for a visually appealing avatar.
 
-## User Avatars
+## Example User Avatars
 
 <p align="center">
   <kbd>
@@ -31,6 +31,30 @@ This package provides a simple way to generate unique, symmetric identicons base
   </kbd>
 </p>
 
+## Examples with Custom-Shaped Pixels
+
+<p align="center">
+  <kbd>
+    <img src="./arts/avatar_6.png" width="100" alt="Avatar 6"/><br/>
+    <strong>Shaped fg pixels</strong>
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_7.png" width="100" alt="Avatar 7"/><br/>
+    <strong>Shaped fg pixels w/transparency</strong>
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_8.png" width="100" alt="Avatar 8"/><br/>
+    <strong>Shaped fg &amp; bg pixels</strong>
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_9.png" width="100" alt="Avatar 9"/><br/>
+    <strong>Shaped fg &amp; bg pixels, w/transparency</strong>
+  </kbd>
+</p>
+
 ## Installation
 
 To use this package in your Go project, install it via:
@@ -45,100 +69,48 @@ Then, import it in your Go code:
 import "github.com/MuhammadSaim/goavatar"
 ```
 
-## Usage
+## Examples
 
-### **Basic Example**
-
-```go
-package main
-
-import (
- "fmt"
- "image"
- "image/png"
- "os"
-
- "github.com/MuhammadSaim/goavatar"
-)
-
-func main() {
- // empty slice.
- imgSlice := make([]image.Image, 0)
-
- // Generates a unique avatar based on "QuantumNomad42" with a custom width and height.
- // Saves the generated avatar as avatar_1.png
- image1 := goavatar.Make("QuantumNomad42",
-  goavatar.WithSize(512),  // Set custom image widthxheight (default is 64)
- )
-
- // Generate the second avatar with a custom grid size with a 10x10 grid for more detail.
- // Saves the generated avatar as avatar_2.png
- image2 := goavatar.Make("EchoFrost7",
-  goavatar.WithSize(512),   // Set custom image widthxheight (default is 64)
-  goavatar.WithGridSize(10), // Set custom grid size (default is 8), affects pattern complexity
- )
-
- // Generate the third avatar with a custom brownish background color.
- // Saves the generated avatar as avatar_3.png
- image3 := goavatar.Make("NebulaTide19",
-  goavatar.WithSize(512),                 // Set custom image widthxheight (default is 256)
-  goavatar.WithBgColor(170, 120, 10, 255), // Change background color (default is light gray)
- )
-
- // Generate the fourth avatar with a custom brownish background and white foreground.
- // Saves the generated avatar as avatar_4.png
- image4 := goavatar.Make("ZephyrPulse88",
-  goavatar.WithSize(512),                  // Set custom image widthxheight (default is 64)
-  goavatar.WithBgColor(170, 120, 10, 255),  // Change background color (default is light gray)
-  goavatar.WithFgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
-
- )
-
- // Generate an avatar using default settings
- // Saves the generated avatar as avatar_5.png
- image5 := goavatar.Make("EmberNexus23")
-
- // append all the images into the list
- imgSlice = append(imgSlice, image1, image2, image3, image4, image5)
-
- // loop through the image slice and save the images
- for i, img := range imgSlice {
-
-  filename := fmt.Sprintf("../arts/avatar_%d.png", i+1)
-
-  // Create the file
-  file, err := os.Create(filename)
-  if err != nil {
-   fmt.Println("Error creating file:", err)
-   continue
-  }
-  defer file.Close()
-
-  // Encode image as PNG and save
-  err = png.Encode(file, img)
-  if err != nil {
-   fmt.Println("Error saving image:", err)
-  } else {
-   fmt.Println("Saved: ", filename)
-  }
-
- }
-}
-```
-
-This will generate a unique identicons for the input string and save in the `arts` directory.
+See the [example folder](./example) for a program that creates the identicons found in the [arts directory](./arts).
 
 ## Package Documentation
 
-### **Generate Identicon**
+### Generate Identicon
 
 ```go
 func Make(input, ...optFunc) image.Image
 ```
 
--   `input`: A string used to generate a unique identicon (e.g., email, username).
--   `...optFunc`: Functional options to override the default values.
--   `image.Image`: Function returns an `image.Image`, allowing the caller to handle image processing, encoding, and storage as needed.
+- `input`: A string used to generate a unique identicon (e.g., email, username).
+- `...optFunc`: Functional options to override the default values.
+- `image.Image`: Function returns an `image.Image`, allowing the caller to handle image processing, encoding, and storage as needed.
+
+### Functional Options
+
+```go
+// WithSize sets the size of the avatar.
+// It is always square and has a minimum size of 64x64
+func WithSize(s int) optFunc
+
+// WithGridSize sets the grid size of the avatar.
+func WithGridSize(g int) optFunc
+
+// WithBgColor sets the background color of the avatar.
+func WithBgColor(r, g, b, a uint8) optFunc
+
+// WithFgColor sets the foreground color of the avatar.
+func WithFgColor(r, g, b, a uint8) optFunc
+
+// WithFgShape sets the shape of the foreground pixels.
+func WithFgShape(s [][]int) optFunc
+
+// WithBgShape sets the shape of the background pixels.
+func WithBgShape(s [][]int) optFunc
+
+// WithTransparency sets the option to have the background show
+// through any negative space in shaped foreground pixels.
+func WithTransparency() optFunc
+```
 
 ## License
 
