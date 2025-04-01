@@ -29,6 +29,11 @@ This package provides a simple way to generate unique, symmetric identicons base
     <img src="./arts/avatar_5.png" width="100" alt="Avatar 5"/><br/>
     <strong>EmberNexus23</strong>
   </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_6.png" width="100" alt="Avatar 5"/><br/>
+    <strong>nice__user__name</strong>
+  </kbd>
 </p>
 
 ## Installation
@@ -98,8 +103,16 @@ func main() {
  // Saves the generated avatar as avatar_5.png
  image5 := goavatar.Make("EmberNexus23")
 
+ // Collect options dynamically
+ var opts []goavatar.OptFunc
+
+ // add size
+ opts = append(opts, goavatar.WithSize(100))
+ opts = append(opts, goavatar.WithGridSize(10))
+ image6 := goavatar.Make("nice__user__name", opts...)
+
  // append all the images into the list
- imgSlice = append(imgSlice, image1, image2, image3, image4, image5)
+ imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6)
 
  // loop through the image slice and save the images
  for i, img := range imgSlice {
