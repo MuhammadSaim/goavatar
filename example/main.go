@@ -46,8 +46,16 @@ func main() {
 	// Saves the generated avatar as avatar_5.png
 	image5 := goavatar.Make("EmberNexus23")
 
+	// Collect options dynamically
+	var opts []goavatar.OptFunc
+
+	// add size
+	opts = append(opts, goavatar.WithSize(100))
+	opts = append(opts, goavatar.WithGridSize(10))
+	image6 := goavatar.Make("nice__user__name", opts...)
+
 	// append all the images into the list
-	imgSlice = append(imgSlice, image1, image2, image3, image4, image5)
+	imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6)
 
 	// loop through the image slice and save the images
 	for i, img := range imgSlice {

@@ -9,7 +9,7 @@ import (
 // and then using the same raw hash logic as in Make: for x=0, y=0, it tests if (hash[0] & 1) == 1.
 //
 // NOTE: generateHash returns a hex‑encoded string, so here we use its first character’s ASCII code.
-func expectedTopLeftPixel(input string, opts []optFunc) (col color.Color) {
+func expectedTopLeftPixel(input string, opts []OptFunc) (col color.Color) {
 	// generate the hash of the input
 	hash := generateHash(input)
 	// get the default configuration; which sets fgColor to {hash[0], hash[1], hash[2], 255}
@@ -30,7 +30,7 @@ func TestMake(t *testing.T) {
 	tests := []struct {
 		name   string
 		input  string
-		opts   []optFunc
+		opts   []OptFunc
 		width  int
 		height int
 	}{
@@ -43,33 +43,33 @@ func TestMake(t *testing.T) {
 		{
 			name:  "Custom width and height",
 			input: "custom-size",
-			opts:  []optFunc{WithSize(512)},
+			opts:  []OptFunc{WithSize(512)},
 			width: 512, height: 512,
 		},
 		{
 			name:  "Custom background color",
 			input: "custom-bg",
 			// override background color only
-			opts:  []optFunc{WithBgColor(255, 0, 0, 255)},
+			opts:  []OptFunc{WithBgColor(255, 0, 0, 255)},
 			width: 64, height: 64,
 		},
 		{
 			name:  "Custom foreground color",
 			input: "custom-fg",
 			// override foreground color only
-			opts:  []optFunc{WithFgColor(10, 20, 30, 255)},
+			opts:  []OptFunc{WithFgColor(10, 20, 30, 255)},
 			width: 64, height: 64,
 		},
 		{
 			name:  "QuantumNomad42",
 			input: "QuantumNomad42",
-			opts:  []optFunc{WithSize(512)},
+			opts:  []OptFunc{WithSize(512)},
 			width: 512, height: 512,
 		},
 		{
 			name:  "EchoFrost7",
 			input: "EchoFrost7",
-			opts:  []optFunc{WithSize(512)},
+			opts:  []OptFunc{WithSize(512)},
 			width: 512, height: 512,
 		},
 	}

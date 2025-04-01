@@ -16,10 +16,10 @@ type options struct {
 }
 
 // optFunc is a function that applies an option to the options struct.
-type optFunc func(*options)
+type OptFunc func(*options)
 
 // WithSize sets the width and height of the avatar minimum 64x64.
-func WithSize(s int) optFunc {
+func WithSize(s int) OptFunc {
 	return func(o *options) {
 		// insure that image should be at least 64x64
 		if s >= 64 {
@@ -29,21 +29,24 @@ func WithSize(s int) optFunc {
 }
 
 // WithGridSize sets the grid size of the avatar.
-func WithGridSize(g int) optFunc {
+func WithGridSize(g int) OptFunc {
 	return func(o *options) {
-		o.gridSize = g
+		// make sure grid is minimum 8 to make nice pattrens
+		if g > 8 {
+			o.gridSize = g
+		}
 	}
 }
 
 // WithBgColor sets the background color of the avatar.
-func WithBgColor(r, g, b, a uint8) optFunc {
+func WithBgColor(r, g, b, a uint8) OptFunc {
 	return func(o *options) {
 		o.bgColor = color.RGBA{r, g, b, a}
 	}
 }
 
 // WithFgColor sets the foreground color of the avatar.
-func WithFgColor(r, g, b, a uint8) optFunc {
+func WithFgColor(r, g, b, a uint8) OptFunc {
 	return func(o *options) {
 		o.fgColor = color.RGBA{r, g, b, a}
 	}
@@ -52,8 +55,8 @@ func WithFgColor(r, g, b, a uint8) optFunc {
 // defaultOptions provides the default value to generate the avatar.
 func defaultOptions(hash string) options {
 	return options{
-		size:     64, // default size should be 64 to make sure images are perfect square
-		gridSize: 8,
+		size:     64,                                         // default size should be 64 to make sure images are perfect square
+		gridSize: 8,                                          // minimum size for the grid for make shape complexity
 		bgColor:  color.RGBA{240, 240, 240, 255},             // light gray color
 		fgColor:  color.RGBA{hash[0], hash[1], hash[2], 255}, // use the first three hash bytes as the foreground color
 	}
@@ -75,7 +78,7 @@ func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
 }
 
 // Make generates an avatar image based on the input string and options.
-func Make(input string, opts ...optFunc) image.Image {
+func Make(input string, opts ...OptFunc) image.Image {
 	// generate the hash of an input
 	hash := generateHash(input)
 	o := defaultOptions(hash)
