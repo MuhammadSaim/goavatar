@@ -50,8 +50,8 @@ func main() {
 	var opts []goavatar.OptFunc
 
 	// add size
-	opts = append(opts, goavatar.WithSize(100))
-	opts = append(opts, goavatar.WithGridSize(10))
+	opts = append(opts, goavatar.WithSize(500))
+	opts = append(opts, goavatar.WithGridSize(13))
 	image6 := goavatar.Make("nice__user__name", opts...)
 
 	// append all the images into the list

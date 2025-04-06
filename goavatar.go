@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"image"
 	"image/color"
+	"math"
 )
 
 // option contains the configuration for the avatar generator.
@@ -68,11 +69,26 @@ func generateHash(data string) string {
 	return hex.EncodeToString(hash[:])
 }
 
-// drawPixel draws a single pixel and enlarge each pixle into 20x20 block.
-func drawPixel(img *image.RGBA, x, y int, c color.Color, pixelW, pixelH int) {
-	for dx := 0; dx < pixelW; dx++ {
-		for dy := 0; dy < pixelH; dy++ {
-			img.Set(x*pixelW+dx, y*pixelH+dy, c)
+// drawPixel draws a single pixel block based on proportional scaling to avoid gaps.
+func drawPixel(img *image.RGBA, gridX, gridY int, c color.Color, gridSize, imageSize int) {
+	// Calculate exact scaled bounds
+	startX := int(math.Round(float64(gridX) * float64(imageSize) / float64(gridSize)))
+	startY := int(math.Round(float64(gridY) * float64(imageSize) / float64(gridSize)))
+	endX := int(math.Round(float64(gridX+1) * float64(imageSize) / float64(gridSize)))
+	endY := int(math.Round(float64(gridY+1) * float64(imageSize) / float64(gridSize)))
+
+	// Clamp to image size to avoid out-of-bounds
+	if endX > img.Bounds().Dx() {
+		endX = img.Bounds().Dx()
+	}
+	if endY > img.Bounds().Dy() {
+		endY = img.Bounds().Dy()
+	}
+
+	// Fill the block
+	for y := startY; y < endY; y++ {
+		for x := startX; x < endX; x++ {
+			img.Set(x, y, c)
 		}
 	}
 }
@@ -90,12 +106,10 @@ func Make(input string, opts ...OptFunc) image.Image {
 	// create a blank image
 	img := image.NewRGBA(image.Rect(0, 0, o.size, o.size))
 
-	pixelSizeX := o.size / o.gridSize // each grid cell width
-	pixelSizeY := o.size / o.gridSize // each grid cell height
-
 	// generate colors
 	avatarColor := o.fgColor
 	bgColor := o.bgColor
+	isOdd := o.gridSize%2 != 0
 
 	// generate the pixel pattern
 	// loop over each pixel in the grid
@@ -106,13 +120,23 @@ func Make(input string, opts ...OptFunc) image.Image {
 
 			// image should
 			if pixelOn {
-				drawPixel(img, x, y, avatarColor, pixelSizeX, pixelSizeY)
-				drawPixel(img, o.gridSize-1-x, y, avatarColor, pixelSizeX, pixelSizeY) // mirror the pixel
+				drawPixel(img, x, y, avatarColor, o.gridSize, o.size)
+				drawPixel(img, o.gridSize-1-x, y, avatarColor, o.gridSize, o.size) // mirror the pixel
 			} else {
-				drawPixel(img, x, y, bgColor, pixelSizeX, pixelSizeY)
-				drawPixel(img, o.gridSize-1-x, y, bgColor, pixelSizeX, pixelSizeY) // mirror the bg pixel
+				drawPixel(img, x, y, bgColor, o.gridSize, o.size)
+				drawPixel(img, o.gridSize-1-x, y, bgColor, o.gridSize, o.size) // mirror the bg pixel
 			}
 
+		}
+		// Draw the center column if gridSize is odd
+		if isOdd {
+			mid := o.gridSize / 2
+			pixelOn := (hash[y]>>(mid%8))&1 == 1
+			color := bgColor
+			if pixelOn {
+				color = avatarColor
+			}
+			drawPixel(img, mid, y, color, o.gridSize, o.size)
 		}
 	}
 
