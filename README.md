@@ -1,5 +1,9 @@
 # Goavatar Identicon Generator in Go
 
+<p align="center">
+    <img src="./arts/goavatar-banner.png" alt="GoAvatar Banner" />
+</p>
+
 This package provides a simple way to generate unique, symmetric identicons based on an input string (e.g., an email address or username). It uses an **MD5 hash** to create a deterministic pattern and color scheme, then mirrors the design for a visually appealing avatar.
 
 ## User Avatars
