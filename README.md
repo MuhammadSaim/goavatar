@@ -145,6 +145,26 @@ func main() {
 
 This will generate a unique identicons for the input string and save in the `arts` directory.
 
+## HTTP API
+
+If you are not using Go, you can still use Goavatar via the hosted HTTP API.
+
+**Base URL:** `https://goavatar-server-359018011410.europe-west1.run.app/`
+
+### Query Parameters
+
+- `seed` (required): The string used to generate the unique identicon (e.g., email, username).
+- `size` (optional): The width and height of the image (default: 512).
+- `grid` (optional): The grid size for the pattern (default: 8).
+- `fg_color` (optional): Foreground color in hex format (e.g., `RRGGBBAA`).
+- `bg_color` (optional): Background color in hex format (e.g., `00000000` for transparent).
+
+### Example Usage
+
+```
+https://goavatar-server-359018011410.europe-west1.run.app/?size=500&grid=10&fg_color=452a2fff&bg_color=00000000&seed=someusername
+```
+
 ## Package Documentation
 
 ### **Generate Identicon**
