@@ -18,12 +18,43 @@ func expectedTopLeftPixel(input string, opts []OptFunc) (col color.Color) {
 	for _, opt := range opts {
 		opt(&conf)
 	}
-	// For the top‐left cell (x=0,y=0), the decision is based on the least‐significant bit of the raw hash character.
-	// Using the raw ASCII value of hash[0] as in the current implementation.
-	if (hash[0] & 1) == 1 {
-		return conf.fgColor
+	
+	// Determine the final color at (0,0)
+	// It's cumulative. Background first.
+	// Then layer 0. If pixelOn, draw layer 0 color.
+	// Then layer 1. If pixelOn, draw layer 1 color.
+	// ...
+	// Since we overwrite, the LAST active layer wins.
+	
+	finalColor := conf.bgColor
+
+	currentHash := hash
+	
+	for l := 0; l < conf.layers; l++ {
+		if l > 0 {
+			currentHash = generateHash(currentHash)
+		}
+		
+		// For the top‐left cell (x=0,y=0), the decision is based on the least‐significant bit of the raw hash character.
+		// Using the raw ASCII value of hash[0] as in the current implementation.
+		pixelOn := (currentHash[0] & 1) == 1
+		
+		if pixelOn {
+			// determine color for this layer
+			var layerColor color.NRGBA
+			if l < len(conf.fgColors) {
+				layerColor = conf.fgColors[l]
+				if layerColor == (color.NRGBA{}) {
+					layerColor = color.NRGBA{currentHash[0], currentHash[1], currentHash[2], 255}
+				}
+			} else {
+				layerColor = color.NRGBA{currentHash[0], currentHash[1], currentHash[2], 255}
+			}
+			finalColor = layerColor
+		}
 	}
-	return conf.bgColor
+	
+	return finalColor
 }
 
 func TestMake(t *testing.T) {

@@ -39,7 +39,6 @@ func main() {
 		goavatar.WithSize(50),                    // Set custom image widthxheight if size is less then 64 this will go to default (default is 64)
 		goavatar.WithBgColor(170, 120, 10, 255),  // Change background color (default is light gray)
 		goavatar.WithFgColor(255, 255, 255, 255), // Change foreground color (default is extracted from hash)
-
 	)
 
 	// Generate an avatar using default settings
@@ -54,8 +53,23 @@ func main() {
 	opts = append(opts, goavatar.WithGridSize(13))
 	image6 := goavatar.Make("nice__user__name", opts...)
 
+	// Generate multi-layered avatar (2 layers)
+	image7 := goavatar.Make("MultiLayer2",
+		goavatar.WithSize(512),
+		goavatar.WithLayers(2),
+	)
+
+	// Generate multi-layered avatar (3 layers) with custom colors for each layer
+	image8 := goavatar.Make("MultiLayer3Custom",
+		goavatar.WithSize(512),
+		goavatar.WithLayers(3),
+		goavatar.WithLayerColor(0, 255, 0, 0, 255),   // Red
+		goavatar.WithLayerColor(1, 0, 255, 0, 255),   // Green
+		goavatar.WithLayerColor(2, 0, 0, 255, 255),   // Blue
+	)
+
 	// append all the images into the list
-	imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6)
+	imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6, image7, image8)
 
 	// loop through the image slice and save the images
 	for i, img := range imgSlice {

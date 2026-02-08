@@ -35,8 +35,18 @@ This package provides a simple way to generate unique, symmetric identicons base
   </kbd>
   &nbsp;&nbsp;&nbsp;&nbsp;
   <kbd>
-    <img src="./arts/avatar_6.png" width="100" alt="Avatar 5"/><br/>
+    <img src="./arts/avatar_6.png" width="100" alt="Avatar 6"/><br/>
     <strong>nice__user__name</strong>
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_7.png" width="100" alt="Avatar 7"/><br/>
+    <strong>MultiLayer2</strong>
+  </kbd>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <kbd>
+    <img src="./arts/avatar_8.png" width="100" alt="Avatar 8"/><br/>
+    <strong>MultiLayer3Custom</strong>
   </kbd>
 </p>
 
@@ -107,16 +117,40 @@ func main() {
  // Saves the generated avatar as avatar_5.png
  image5 := goavatar.Make("EmberNexus23")
 
- // Collect options dynamically
- var opts []goavatar.OptFunc
+	// Collect options dynamically
+	var opts []goavatar.OptFunc
 
- // add size
- opts = append(opts, goavatar.WithSize(100))
- opts = append(opts, goavatar.WithGridSize(10))
- image6 := goavatar.Make("nice__user__name", opts...)
+	// add size
+	opts = append(opts, goavatar.WithSize(100))
+	opts = append(opts, goavatar.WithGridSize(10))
+	image6 := goavatar.Make("nice__user__name", opts...)
 
- // append all the images into the list
- imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6)
+	// Generate multi-layered avatar (2 layers)
+	image7 := goavatar.Make("MultiLayer2",
+		goavatar.WithSize(512),
+		goavatar.WithLayers(2),
+	)
+
+	// Generate multi-layered avatar (3 layers) with custom colors for each layer
+	image8 := goavatar.Make("MultiLayer3Custom",
+		goavatar.WithSize(512),
+		goavatar.WithLayers(3),
+		goavatar.WithLayerColor(0, 255, 0, 0, 255), // Red
+		goavatar.WithLayerColor(1, 0, 255, 0, 255), // Green
+		goavatar.WithLayerColor(2, 0, 0, 255, 255), // Blue
+	)
+	
+	// Generate multi-layered avatar with transparency
+	image9 := goavatar.Make("MultiLayer3Transparent",
+		goavatar.WithSize(512),
+		goavatar.WithLayers(3),
+		goavatar.WithLayerColor(0, 255, 0, 0, 80),  // Red (Transparent)
+		goavatar.WithLayerColor(1, 0, 255, 0, 160), // Green (Transparent)
+		goavatar.WithLayerColor(2, 0, 0, 255, 255), // Blue (Opaque)
+	)
+
+	// append all the images into the list
+	imgSlice = append(imgSlice, image1, image2, image3, image4, image5, image6, image7, image8, image9)
 
  // loop through the image slice and save the images
  for i, img := range imgSlice {
